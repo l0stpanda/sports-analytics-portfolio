@@ -77,3 +77,18 @@ The pipeline is thus:
 - IMPORTANT: cluster quality vs. basketball usefulness.
 
 ### Documentation
+
+- Document the entire data pipeline.
+- Record the final features as well as their rationale.
+- Record the parameters and evaluation metrics with each export.
+
+## Further Plans
+
+I want to move this from just a notebook to a more repeatable pipeline, especially modular if possible in order to get more years and better outputs. Below are some of my thoughts:
+
+- Extending this work to years past (and the can of worms that opens)
+- Storing the model's metadata alongside the player output.
+- Handling players changing teams
+- Ensuring the output schema stays the same for frontend stability throughout modeling process changes
+- Scaling to career-level archetypes
+
