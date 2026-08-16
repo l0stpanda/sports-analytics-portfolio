@@ -92,3 +92,15 @@ I want to move this from just a notebook to a more repeatable pipeline, especial
 - Ensuring the output schema stays the same for frontend stability throughout modeling process changes
 - Scaling to career-level archetypes
 
+## Week 1 Work
+
+### Are these features linearly separable?
+
+No, since that isn't a requirement for an unsupervised clustering model. I need to focus on whether the features form meaningful reagions in feature space. I also need to figure out whether transformations or redundant features are distoring Euclidean distance.
+
+First, I'm removing redundant features:
+
+- three_point_rate
+- rim_plus_three_rate
+- midrange_rate
+- pct_unassisted
