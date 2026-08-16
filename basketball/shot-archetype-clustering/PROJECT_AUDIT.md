@@ -1,6 +1,6 @@
 # PROJECT AUDIT
 
-## State Log (as of 9 August 2026):
+## VERSION 0: State Log (as of 9 August 2026):
 
 ### Features I'm Using
 I'm currently using **15 standardized features**, split into four groups:
@@ -82,7 +82,7 @@ The pipeline is thus:
 - Record the final features as well as their rationale.
 - Record the parameters and evaluation metrics with each export.
 
-## Further Plans
+### Further Plans
 
 I want to move this from just a notebook to a more repeatable pipeline, especially modular if possible in order to get more years and better outputs. Below are some of my thoughts:
 
@@ -92,15 +92,69 @@ I want to move this from just a notebook to a more repeatable pipeline, especial
 - Ensuring the output schema stays the same for frontend stability throughout modeling process changes
 - Scaling to career-level archetypes
 
-## Week 1 Work
+### Metrics
+Silhouette score: 0.130
+Davies-Bouldin index: 1.834
+
+## VERSION 1: Feature Engineering
 
 ### Are these features linearly separable?
 
-No, since that isn't a requirement for an unsupervised clustering model. I need to focus on whether the features form meaningful reagions in feature space. I also need to figure out whether transformations or redundant features are distoring Euclidean distance.
+No, since that isn't a requirement for an unsupervised clustering model. I need to focus on whether the features form meaningful regions in feature space. I also need to figure out whether transformations or redundant features are distoring Euclidean distance.
 
-First, I'm removing redundant features:
+### Changelog and Analysis
+
+Removed redundant features:
 
 - three_point_rate
 - rim_plus_three_rate
 - midrange_rate
 - pct_unassisted
+
+Added three new features:
+
+- shot_diversity: calculated with Shannon Entropy. Does this player specialize heavily in one type of shot, or do they distribute their offense across many areas?
+- efg_pct: effective field goal percentage. Think of it as an overall fg% across all the zones.
+- unassisted_fga_rate: manually calculated now.
+
+### Metrics
+
+ALL THREE NEW FEATURES
+Silhouette score: 0.121 
+Davies-Bouldin index: 1.986
+
+SHOT DIVERSITY ONLY
+Silhouette score: 0.124
+Davies-Bouldin index: 1.850
+
+EFG PCT ONLY
+Silhouette score: 0.124
+Davies-Bouldin index: 1.785
+
+UNASSISTED FGA RATE ONLY
+Silhouette score: 0.129
+Davies-Bouldin index: 1.802
+
+SHOT DIVERSITY + EFG PCT
+Silhouette score: 0.119
+Davies-Bouldin index: 1.947
+
+SHOT DIVERSITY + UNASSISTED FGA RATE
+Silhouette score: 0.126
+Davies-Bouldin index: 1.781
+
+EFG PCT + UNASSISTED FGA RATE
+Silhouette score: 0.116
+Davies-Bouldin index: 1.814
+
+After analyzing these metrics and the graphs given by analyzing the new features, I decided to delete efg.
+New feature metrics:
+![Feature Correlation Matrix](v1/v1-feature-corr-matrix.png)
+![Feature Distributions](v1/v1-feature-distributions.png)
+![Feature Boxplot](v1/v1-feature-boxplot.png)
+![Feature Profile by Cluster](image.png)
+
+Why the two features matter: unassisted_fga_rate adds upon pct_assisted by making it a per-attempt stat, so it doesn't get confounded by make rate. shot_diversity uses a normalized Shannon entropy - 0 = a one-zone specialist, 1 is evenly spread. Tells a story of balance vs. one-trick.
+
+I found unassisted_fga_rate to actually push itself to the very front of the 13 features with an F-score of 240.1 to a p-score of 3e-98. Shot_diversity is not far behind as a top-4 feature with 147.4 F-score and 2e-73 p-value. Important stuff!
+
