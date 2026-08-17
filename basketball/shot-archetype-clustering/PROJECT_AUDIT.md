@@ -351,5 +351,9 @@ K=7 identifies seven distinct, basketball-meaningful archetypes:
    - Example: Aaron Gordon, Anthony Black
    - Profile: 32.4% rim, 23.7% paint, 25.4% above-break 3s
 
+### Metrics
+Silhouette score: 0.124
+Davies-Bouldin index: 1.766
+
 
 
