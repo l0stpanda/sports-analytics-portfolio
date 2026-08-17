@@ -270,13 +270,86 @@ cluster_k7
 6                 0.324                 0.237             0.078   
 
             pct_fga_corner3  pct_fga_above_break3  fgpct_rim  \
-...
+cluster_k7                                                     
+0                     0.204                 0.443      0.655   
+1                     0.052                 0.279      0.661   
+2                     0.200                 0.239      0.662   
+3                     0.008                 0.017      0.717   
+4                     0.110                 0.400      0.598   
+5                     0.021                 0.038      0.710   
+6                     0.107                 0.254      0.694   
+
+            fgpct_paint_non_ra  fgpct_midrange  fgpct_corner3  \
+cluster_k7                                                      
+0                        0.418           0.409          0.418   
+1                        0.463           0.416          0.380   
+2                        0.339           0.268          0.336   
+3                        0.496           0.401          0.565   
+4                        0.401           0.431          0.406   
+5                        0.456           0.307          0.158   
+6                        0.469           0.382          0.368   
+
+            fgpct_above_break3  pct_assisted  shot_diversity  \
+cluster_k7                                                     
+0                        0.363         0.839           0.829   
+1                        0.337         0.439           0.884   
+2                        0.314         0.729           0.841   
+3                        0.370         0.659           0.447   
+4                        0.347         0.616           0.890   
+5                        0.122         0.667           0.558   
+6                        0.335         0.710           0.884   
+
+            unassisted_fga_rate  
+cluster_k7                       
+0                         0.071  
+1                         0.264  
+2                         0.123  
+3                         0.216  
+4                         0.162  
+5                         0.197  
+6                         0.143  
+
+Sample players per cluster:
+  Cluster 0 (n=67): ['AJ Green', 'Aaron Holiday', 'Aaron Nesmith', 'Al Horford']
+  Cluster 1 (n=71): ['Ajay Mitchell', 'Alperen Sengun', 'Andrew Nembhard', 'Anfernee Simons']
+  Cluster 2 (n=45): ['Andre Drummond', 'Ben Saraf', 'Bilal Coulibaly', 'Bruce Brown']
   Cluster 3 (n=17): ['Adem Bona', 'Clint Capela', 'Daniel Gafford', 'Deandre Ayton']
   Cluster 4 (n=69): ['Aaron Wiggins', 'Andrew Wiggins', 'Ayo Dosunmu', 'Bennedict Mathurin']
   Cluster 5 (n=17): ['Amen Thompson', 'Ausar Thompson', "Day'Ron Sharpe", 'Domantas Sabonis']
   Cluster 6 (n=64): ['Aaron Gordon', 'Ace Bailey', 'Alex Sarr', 'Anthony Black']
-Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
 
+The biggest backbreaker here, alongside its obviously worse metrics, is K=6's cluster with 5 players. So I've settled on 7. It performs slightly worse than K=5, but we will have to make that sacrifice for wider breadth.
+
+### Archetype Naming
+K=7 identifies seven distinct, basketball-meaningful archetypes:
+
+1. **Three-Point Role Players (n=67):** Low-volume perimeter specialists, high assists
+   - Example: AJ Green, Aaron Nesmith, Al Horford
+   - Profile: 64.7% from 3pt range, 83.9% assisted makes
+
+2. **Two-Level Scorers (n=71):** Balanced scorers with high shot diversity
+   - Example: Alperen Sengun, Anfernee Simons
+   - Profile: Shot diversity 0.884, mid-range on most dimensions
+
+3. **Corner Specialists (n=45):** Role players, corner-oriented, mid-post
+   - Example: Andre Drummond, Bruce Brown
+   - Profile: 39.1% rim, 20% corner-3, 72.9% assisted
+
+4. **Elite Post Scorers (n=17):** High-volume finishers, efficient from restricted area
+   - Example: Clint Capela, Domantas Sabonis, DeAaron Ayton
+   - Profile: 70.7% rim, nearly 0% 3pt volume, efficient (72% rim FG%)
+
+5. **Playmaking Wings (n=69):** Primary creators, balanced outside game
+   - Example: Aaron Wiggins, Andrew Wiggins
+   - Profile: 40% above-break 3s, 0.890 shot diversity, mid assists
+
+6. **Rim Runners (n=17):** Finishers with limited outside game
+   - Example: Amen Thompson, Ausar Thompson, Day'Ron Sharpe
+   - Profile: 63.7% rim, <6% 3pt, limited ball-handling
+
+7. **Three-Level Scorers (n=64):** Mid-range oriented, mixed scoring
+   - Example: Aaron Gordon, Anthony Black
+   - Profile: 32.4% rim, 23.7% paint, 25.4% above-break 3s
 
 
 
