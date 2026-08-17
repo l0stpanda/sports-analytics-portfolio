@@ -96,6 +96,8 @@ I want to move this from just a notebook to a more repeatable pipeline, especial
 Silhouette score: 0.130
 Davies-Bouldin index: 1.834
 
+Important graphs can be found in the version folders (v0, v1, etc.). The ones I'm honing in on are elbow, silhouette, feature value heatmap, and PCA. 
+
 ## VERSION 1: Feature Engineering
 
 ### Are these features linearly separable?
@@ -152,9 +154,129 @@ New feature metrics:
 ![Feature Correlation Matrix](v1/v1-feature-corr-matrix.png)
 ![Feature Distributions](v1/v1-feature-distributions.png)
 ![Feature Boxplot](v1/v1-feature-boxplot.png)
-![Feature Profile by Cluster](image.png)
+![Feature Profile by Cluster](v1/v1-feature-profiles.png)
 
 Why the two features matter: unassisted_fga_rate adds upon pct_assisted by making it a per-attempt stat, so it doesn't get confounded by make rate. shot_diversity uses a normalized Shannon entropy - 0 = a one-zone specialist, 1 is evenly spread. Tells a story of balance vs. one-trick.
 
 I found unassisted_fga_rate to actually push itself to the very front of the 13 features with an F-score of 240.1 to a p-score of 3e-98. Shot_diversity is not far behind as a top-4 feature with 147.4 F-score and 2e-73 p-value. Important stuff!
+
+Silhouette score: 0.126
+Davies-Bouldin index: 1.781
+
+## VERSION 2: Clustering Tweaks
+
+### What I'm Doing
+
+Tweaking my cluster count both due to domain knowledge and the 2nd cluster having a large imbalance of players (109 to an average about 60 players for the other four clusters). I think I might cap out at 8 or 9 to avoid overfitting. Lowering it is probably not helpful, but I am curious.
+
+### Analysis
+
+I got pretty much what I expected out of the testing by testing k = 2-8, with a noticeable boost in the third cluster (can be ignored) and a big red sign screaming "LOOK AT SIX AND SEVEN!"
+
+I graphed their differences in both silhouette and Davies-Bouldin, can be found in the notebook, probably, and saved in the v2 folder.
+
+Next, I looked a bit closer at the metrics for k=6 and k=7.
+
+**K = 6:**
+
+=== K=6 Inspection ===
+Cluster sizes:
+cluster_k6
+0      5
+1     83
+2     52
+3     55
+4    118
+5     37
+Name: count, dtype: int64
+
+Cluster profiles:
+            pct_fga_rim  pct_fga_paint_non_ra  pct_fga_midrange  \
+cluster_k6                                                        
+0                 0.656                 0.240             0.072   
+1                 0.247                 0.254             0.159   
+2                 0.374                 0.136             0.036   
+3                 0.170                 0.098             0.058   
+4                 0.246                 0.198             0.094   
+5                 0.637                 0.251             0.035   
+
+            pct_fga_corner3  pct_fga_above_break3  fgpct_rim  \
+cluster_k6                                                     
+0                     0.003                 0.029      0.691   
+1                     0.057                 0.283      0.657   
+2                     0.202                 0.251      0.657   
+3                     0.211                 0.463      0.653   
+4                     0.115                 0.347      0.643   
+5                     0.024                 0.052      0.719   
+
+            fgpct_paint_non_ra  fgpct_midrange  fgpct_corner3  \
+cluster_k6                                                      
+0                        0.431           0.310          1.000   
+1                        0.456           0.414          0.383   
+2                        0.344           0.272          0.346   
+3                        0.417           0.422          0.412   
+4                        0.437           0.406          0.400   
+5                        0.478           0.380          0.253   
+
+            fgpct_above_break3  pct_assisted  shot_diversity  \
+cluster_k6                                                     
+0                        0.188         0.601           0.527   
+1                        0.336         0.451           0.888   
+2                        0.316         0.736           0.849   
+3                        0.363         0.848           0.817   
+4                        0.346         0.680           0.893   
+5                        0.274         0.680           0.552   
+
+            unassisted_fga_rate  
+cluster_k6                       
+0                         0.240  
+1                         0.256  
+2                         0.120  
+3                         0.066  
+4                         0.143  
+5                         0.193  
+
+Sample players per cluster:
+  Cluster 0 (n=5): ['Clint Capela', 'Giannis Antetokounmpo', 'Jonas Valanciunas', 'Mark Williams']
+  Cluster 1 (n=83): ['Ajay Mitchell', 'Alperen Sengun', 'Andrew Nembhard', 'Anfernee Simons']
+  Cluster 2 (n=52): ['Andre Drummond', 'Ben Saraf', 'Bilal Coulibaly', 'Bruce Brown']
+  Cluster 3 (n=55): ['AJ Green', 'Aaron Nesmith', 'Al Horford', 'Alex Caruso']
+  Cluster 4 (n=118): ['Aaron Gordon', 'Aaron Holiday', 'Aaron Wiggins', 'Ace Bailey']
+  Cluster 5 (n=37): ['Adem Bona', 'Amen Thompson', 'Anthony Gill', 'Ausar Thompson']
+
+**K = 7:**
+
+=== K=7 Inspection ===
+Cluster sizes:
+cluster_k7
+0    67
+1    71
+2    45
+3    17
+4    69
+5    17
+6    64
+Name: count, dtype: int64
+
+Cluster profiles:
+            pct_fga_rim  pct_fga_paint_non_ra  pct_fga_midrange  \
+cluster_k7                                                        
+0                 0.187                 0.109             0.057   
+1                 0.250                 0.257             0.161   
+2                 0.391                 0.135             0.035   
+3                 0.707                 0.229             0.039   
+4                 0.199                 0.177             0.114   
+5                 0.637                 0.269             0.035   
+6                 0.324                 0.237             0.078   
+
+            pct_fga_corner3  pct_fga_above_break3  fgpct_rim  \
+...
+  Cluster 3 (n=17): ['Adem Bona', 'Clint Capela', 'Daniel Gafford', 'Deandre Ayton']
+  Cluster 4 (n=69): ['Aaron Wiggins', 'Andrew Wiggins', 'Ayo Dosunmu', 'Bennedict Mathurin']
+  Cluster 5 (n=17): ['Amen Thompson', 'Ausar Thompson', "Day'Ron Sharpe", 'Domantas Sabonis']
+  Cluster 6 (n=64): ['Aaron Gordon', 'Ace Bailey', 'Alex Sarr', 'Anthony Black']
+Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+
+
+
 
