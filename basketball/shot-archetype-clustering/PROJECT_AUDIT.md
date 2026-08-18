@@ -352,8 +352,40 @@ K=7 identifies seven distinct, basketball-meaningful archetypes:
    - Profile: 32.4% rim, 23.7% paint, 25.4% above-break 3s
 
 ### Metrics
+
 Silhouette score: 0.124
 Davies-Bouldin index: 1.766
 
+## Validation Audit (17 August):
 
+### Raw Data Validation
+
+- **Result**: Pass
+- **Players**: 350 / 582 after 200 FGA filter
+- **Issues Found**:
+  - NaN counts: 0
+  - Duplicates: 0
+  - Out-of-range values: 0
+
+### Feature Engineering Validation
+
+- **Result**: Pass
+- **Features Checked**: 13 columns
+- **NaN Summary**: 0
+- **Outliers Detected**: 0
+- **Range Violations**: 0
+
+### Scaling Validation
+
+- **Result**: Pass
+- **Matrix Shape**: (350, 13)
+- **Mean-of-means**: 8.969626018729837e-17
+- **Std-of-stds**: 7.542480201369688e-17
+
+### Export Validation
+- **Result**: Pass
+- **Players Exported**: 350
+- **Clusters**: 7
+- **Cluster Sizes**: {1: 71, 4: 69, 0: 67, 6: 64, 2: 45, 3: 17, 5: 17}
+- **Required Fields NaN**: 0
 
