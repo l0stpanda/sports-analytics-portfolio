@@ -383,9 +383,194 @@ Davies-Bouldin index: 1.766
 - **Std-of-stds**: 7.542480201369688e-17
 
 ### Export Validation
+
 - **Result**: Pass
 - **Players Exported**: 350
 - **Clusters**: 7
 - **Cluster Sizes**: {1: 71, 4: 69, 0: 67, 6: 64, 2: 45, 3: 17, 5: 17}
 - **Required Fields NaN**: 0
+
+### Cluster Interpretation
+
+- Graphed feature importances
+- Graphed cluster sizes
+- Graphed each cluster's normalized profile across all of the features into radar graphs
+- Generated descriptions for each of the clusters
+
+Graphs can be found in v2 folder. Cluster interpretation report:
+
+================================================================================
+CLUSTER INTERPRETATION REPORT
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 0
+────────────────────────────────────────────────────────────────────────────────
+Size: 67 players (19.1% of dataset)
+
+Description:
+  Three-point specialists who thrive in catch-and-shoot roles, often assisted baskets.
+
+Key Distinguishing Traits:
+  • Frequent 3-point shooter (44.3%)
+  • Avoids rim (18.7% of shots)
+  • Mostly assisted baskets (83.9%)
+
+Example Players (by volume):
+  1. Kon Knueppel
+  2. Trey Murphy III
+  3. Toumani Camara
+  4. Donte DiVincenzo
+  5. Tim Hardaway Jr.
+
+Top Feature Extremes:
+  • pct_fga_above_break3: 0.443 (high)
+  • pct_fga_rim: 0.187 (low)
+  • pct_assisted: 0.839 (high)
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 1
+────────────────────────────────────────────────────────────────────────────────
+Size: 71 players (20.3% of dataset)
+
+Description:
+  Self-sufficient scorers who create their own shots across multiple zones; low assist dependency.
+
+Key Distinguishing Traits:
+  • Self-creates heavily (43.9% assisted)
+  • Avoids rim (25.0% of shots)
+
+Example Players (by volume):
+  1. Jaylen Brown
+  2. Tyrese Maxey
+  3. Jalen Brunson
+  4. Luka Dončić
+  5. Donovan Mitchell
+
+Top Feature Extremes:
+  • pct_assisted: 0.439 (low)
+  • pct_fga_rim: 0.250 (low)
+  • shot_diversity: 0.884 (high)
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 2
+────────────────────────────────────────────────────────────────────────────────
+Size: 45 players (12.9% of dataset)
+
+Description:
+  Balanced offensive player with usage across zones and assist patterns.
+
+Key Distinguishing Traits:
+
+Example Players (by volume):
+  1. Matas Buzelis
+  2. OG Anunoby
+  3. Quentin Grimes
+  4. Jerami Grant
+  5. Kel'el Ware
+
+Top Feature Extremes:
+  • fgpct_midrange: 0.268 (low)
+  • pct_fga_corner3: 0.200 (high)
+  • fgpct_paint_non_ra: 0.339 (low)
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 3
+────────────────────────────────────────────────────────────────────────────────
+Size: 17 players (4.9% of dataset)
+
+Description:
+  Post scorers and mid-range threats; score a mix of assisted and self-created baskets.
+
+Key Distinguishing Traits:
+  • Rim-heavy shot diet (70.7% of shots)
+  • Rarely shoots 3s (1.7%)
+
+Example Players (by volume):
+  1. Zion Williamson
+  2. Jalen Duren
+  3. Deandre Ayton
+  4. Giannis Antetokounmpo
+  5. Ivica Zubac
+
+Top Feature Extremes:
+  • pct_fga_rim: 0.707 (high)
+  • shot_diversity: 0.447 (low)
+  • pct_fga_above_break3: 0.017 (low)
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 4
+────────────────────────────────────────────────────────────────────────────────
+Size: 69 players (19.7% of dataset)
+
+Description:
+  Three-point specialists who thrive in catch-and-shoot roles, often assisted baskets.
+
+Key Distinguishing Traits:
+  • Avoids rim (19.9% of shots)
+  • Frequent 3-point shooter (40.0%)
+
+Example Players (by volume):
+  1. LaMelo Ball
+  2. Desmond Bane
+  3. Nickeil Alexander-Walker
+  4. Derrick White
+  5. Brandon Miller
+
+Top Feature Extremes:
+  • pct_fga_rim: 0.199 (low)
+  • pct_fga_above_break3: 0.400 (high)
+  • shot_diversity: 0.890 (high)
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 5
+────────────────────────────────────────────────────────────────────────────────
+Size: 17 players (4.9% of dataset)
+
+Description:
+  Post scorers and mid-range threats; score a mix of assisted and self-created baskets.
+
+Key Distinguishing Traits:
+  • Rim-heavy shot diet (63.7% of shots)
+
+Example Players (by volume):
+  1. Amen Thompson
+  2. Dyson Daniels
+  3. Nic Claxton
+  4. Ausar Thompson
+  5. Jarrett Allen
+
+Top Feature Extremes:
+  • pct_fga_rim: 0.637 (high)
+  • fgpct_corner3: 0.158 (low)
+  • shot_diversity: 0.558 (low)
+
+────────────────────────────────────────────────────────────────────────────────
+CLUSTER 6
+────────────────────────────────────────────────────────────────────────────────
+Size: 64 players (18.3% of dataset)
+
+Description:
+  Balanced offensive player with usage across zones and assist patterns.
+
+Key Distinguishing Traits:
+  • Avoids rim (32.4% of shots)
+  • Mostly assisted baskets (71.0%)
+
+Example Players (by volume):
+  1. Bam Adebayo
+  2. Victor Wembanyama
+  3. Miles Bridges
+  4. Karl-Anthony Towns
+  5. Jabari Smith Jr.
+
+Top Feature Extremes:
+  • shot_diversity: 0.884 (high)
+  • pct_fga_rim: 0.324 (low)
+  • pct_assisted: 0.710 (high)
+
+================================================================================
+
+
 
