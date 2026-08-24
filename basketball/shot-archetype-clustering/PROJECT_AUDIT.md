@@ -57,7 +57,7 @@ The pipeline is thus:
 6. JSON
 7. Website
 
-## 3 Week Plan
+## What I want to do
 
 ### Feature Engineering
 
@@ -572,5 +572,99 @@ Top Feature Extremes:
 
 ================================================================================
 
+## VERSION 3: Feature Distribution Analysis
+ 
+### Motivation
+ 
+Before I commit to any conclusion drawn from the clusters, I need to know what the feature space actually looks like:
 
+1. What are the raw distributions of EVERY feature?
+2. Are the five zone-FG% features normally distributed? (Spoiler: no.) If not, why, and does it matter for K-Means?
+3. Do different clusters actually have *different* distributions on the features that most separate them? Or did K-Means just slice noise?
+ 
+### Step 1: Full Histograms for All 13 Features
+ 
+![Full feature histograms](v3/v3-feature-histograms.png)
+ 
+I plotted every feature in a 5×3 grid with KDE overlays and mean/median lines, then built a descriptive-stats table sorted by absolute skew:
+ 
+| Feature | Mean | Std | Skew | Kurtosis | Why? |
+|---|---|---|---|---|---|
+| `shot_diversity` | 0.832 | 0.137 | **−2.32** | 6.30 | Most players spread shots broadly. |
+| `pct_fga_midrange` | 0.089 | 0.071 | **+1.54** | 3.57 | Midrange is rare league-wide. Median player takes ~7%. A small right tail of dedicated midrange scorers pulls the skew. |
+| `pct_fga_rim` | 0.301 | 0.170 | **+1.26** | 1.72 | Most players are rim-light; a minority are rim-heavy. Right-skewed. |
+| `fgpct_corner3` | 0.383 | 0.125 | **+1.05** | 8.13 | Right-skewed. |
+| `fgpct_above_break3` | 0.332 | 0.091 | **+0.90** | **18.74** | Highest kurtosis in the set. |
+| Remaining 8 features | — | — | −0.43 to +0.79 | −0.45 to +5.49 | Mild-to-moderate skew, nothing alarming. |
+ 
+Takeaways:
+- `shot_diversity` is the most non-normal feature by skew — it's ceiling-capped at 1.0, and nearly everyone clusters near the top. That's fine for clustering (it still separates the specialists from the generalists).
+- The FG% features deserve their own section (Step 2).
+ 
+---
+ 
+### Step 2: Normality Analysis of Zone FG%
+ 
+![Q-Q plots + normal overlays](v3/v3-fgpct-normality.png)
+ 
+I ran two formal tests per `fgpct_*` feature: Shapiro-Wilk and D'Agostino & Pearson's K²:
+ 
+| Feature | Shapiro W | Shapiro p | D'Agostino K² | D'Agostino p | Normal? |
+|---|---|---|---|---|---|
+| `fgpct_rim` | 0.991 | **0.025** | 10.83 | 0.004 | Barely rejected (α = 0.05) |
+| `fgpct_paint_non_ra` | 0.953 | <10⁻⁶ | 55.91 | <10⁻⁶ | Strongly rejected |
+| `fgpct_midrange` | 0.959 | <10⁻⁶ | 27.11 | 10⁻⁵ | Strongly rejected |
+| `fgpct_corner3` | 0.855 | <10⁻⁶ | 111.39 | <10⁻⁶ | Massively rejected |
+| `fgpct_above_break3` | 0.729 | <10⁻⁶ | 136.65 | <10⁻⁶ | Massively rejected |
+ 
+**Why they can't be normal — three structural reasons:**
+ 
+1. **Bounded [0, 1] domain.** A normal distribution has infinite support (−∞, +∞). FG% is a proportion. Even if the histogram looks vaguely bell-shaped, the tails are compressed. `fgpct_rim` rides near 0.66, leaving asymmetric headroom: 0.34 up vs. 0.66 down. No true normal can be asymmetric like that.
+ 
+2. **Binomial proportions with wildly unequal sample sizes.** Each player's zone FG% is successes / attempts. The variance of a binomial proportion is `p(1−p)/n`. One player's corner-3 FG% comes from 2 attempts; another's from 152. The low-volume rates are pure noise, injecting heavy tails.
+ 
+3. **Median-fill artifact creates a synthetic mode.** Players with zero attempts in a zone get filled to the league median (Step 4/5 of the pipeline). For `fgpct_corner3` and `fgpct_above_break3`, this means dozens of non-shooters all land on the exact same values (~0.38 and ~0.33), creating a spike in the density. The result is a bimodal or spike-at-center distribution — plainly visible in the Q-Q plots as a horizontal cluster of points — which is as far from normal as a proportion can get. This is why `fgpct_above_break3` has kurtosis = 18.74.
+ 
+**Does this matter for K-Means?** No — K-Means doesn't assume normality. But it *does* matter for interpreting centroids. A cluster mean on `fgpct_corner3` near 0.38 could mean "average corner shooter" or "cluster full of non-shooters filled to the median." Those are very different basketball stories, and the median-fill can obscure which one is true. In a future version, I'd consider adding a binary "shot-from-this-zone" flag alongside each FG% so the clustering can distinguish non-shooters from bad shooters.
+ 
+---
+ 
+### Step 3: Do Different Clusters Have Different Distributions?
+ 
+![Per-cluster KDE overlays](v3/v3-cluster-distributions.png)
+ 
+I picked the 6 features with the largest centroid range across clusters (i.e., the features that most discriminate one cluster from another): `pct_fga_rim`, `shot_diversity`, `pct_fga_above_break3`, `fgpct_corner3`, `pct_assisted`, and `fgpct_above_break3`. For each, I overlaid KDEs of all 7 clusters on one panel.
+ 
+Then I ran pairwise two-sample Kolmogorov–Smirnov tests on `pct_fga_rim` (the single best discriminator) across all 21 cluster pairs:
+ 
+**15 of 21 comparisons are significant** at a Bonferroni-corrected α = 0.01/21 ≈ 4.76×10⁻⁴.
+ 
+The strongest separations (D ≈ 1.0):
+- Three-Point Specialists vs. Post-Dominant Centers: D = 1.000, p = 7.8×10⁻¹⁸
+- Playmaking Wings vs. Shot Creators: D = 1.000, p = 5.0×10⁻¹⁸
+- Post-Dominant Centers vs. Playmaking Wings: D = 0.986, p = 9.0×10⁻¹⁷
+ 
+The few non-significant pairs are adjacent clusters with similar rim tendencies (e.g., Three-Point Specialists vs. Playmaking Wings, both rim-light; Post-Dominant Centers vs. Shot Creators, both rim-heavy).
+ 
+What the KDE overlay plot reveals:
+- `pct_fga_rim` and `pct_fga_above_break3` form the main axis of separation — an effective "rim ↔ perimeter" spectrum.
+- `shot_diversity` splits the specialists (Post-Dominant Centers, Shot Creators → low) from the well-rounded scorers (Balanced All-Around Scorers → high).
+- `pct_assisted` separates catch-and-shoot clusters (Three-Point Specialists, ~84% assisted) from self-creating ones (Rim-Running Finishers, ~44% assisted).
+- `fgpct_corner3` has overlapping distributions across clusters — the median-fill spike dampens its discriminatory power.
+ 
+**Conclusion:** K-Means isn't slicing noise. The clusters are genuinely distinct distributions on the features that matter most. The heterogeneity is real, and the K-S tests put statistical weight behind what the heatmap in Section 9 showed visually.
+ 
+---
+ 
+### Metrics
+ 
+| Metric | Value |
+|---|---|
+| Features analyzed | 13 |
+| Normality-tested features | 5 (`fgpct_*`) |
+| Features normally distributed | 0 (all rejected at α = 0.05) |
+| Best discriminator (centroid range) | `pct_fga_rim` |
+| Significant K-S pairs (best feature, Bonferroni) | 15 / 21 |
+| New plots saved | 3 |
+| New CSVs saved | 3 |
 
