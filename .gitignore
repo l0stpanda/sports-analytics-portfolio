@@ -13,3 +13,8 @@ __pycache__/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Large dataset/feature arrays
+baseball/pitch-prediction/EDA/mlb_pitches_eda.csv
+
+baseball/pitch-prediction/feature-engineering/*.npy
