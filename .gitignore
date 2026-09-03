@@ -18,3 +18,4 @@ __pycache__/
 baseball/pitch-prediction/EDA/mlb_pitches_eda.csv
 
 baseball/pitch-prediction/feature-engineering/*.npy
+baseball/pitch-prediction/models/lstm/*.npy

@@ -1,0 +1,3 @@
+model,test_set_size,test_set_description,accuracy,baseline,improvement
+XGBoost (all pitches),117758,117K individual pitches,0.43530800455170776,0.1184463051342584,0.31686169941744935
+LSTM (sequences),49523,98K sequences (last 5→predict 6),0.35308846394604526,0.13218100680491893,0.22090745714112633
