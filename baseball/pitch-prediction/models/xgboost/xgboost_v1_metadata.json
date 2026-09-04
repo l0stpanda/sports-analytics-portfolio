@@ -2,9 +2,9 @@
   "model_version": "v1",
   "phase": 2,
   "accuracy": {
-    "test_pct": 43.62563457282943,
+    "test_pct": 43.653403913741485,
     "baseline_pct": 30.127131513862977,
-    "improvement_vs_baseline_pct": 13.49850305896646,
+    "improvement_vs_baseline_pct": 13.526272399878508,
     "improvement_vs_phase1_pct": 0.0
   },
   "pitch_types": [
@@ -67,43 +67,43 @@
   "top_10_features": [
     {
       "feature": "EP_pct",
-      "importance_pct": 17.859577178955078
+      "importance_pct": 17.010486602783203
     },
     {
       "feature": "KC_pct",
-      "importance_pct": 9.457144737243652
+      "importance_pct": 10.278691291809082
     },
     {
       "feature": "FS_pct",
-      "importance_pct": 9.400004386901855
+      "importance_pct": 9.583767890930176
     },
     {
       "feature": "ST_pct",
-      "importance_pct": 7.761937141418457
-    },
-    {
-      "feature": "FO_pct",
-      "importance_pct": 6.471447467803955
+      "importance_pct": 7.571086406707764
     },
     {
       "feature": "FC_pct",
-      "importance_pct": 6.405262470245361
+      "importance_pct": 6.814269542694092
     },
     {
-      "feature": "SL_pct",
-      "importance_pct": 6.11469841003418
+      "feature": "FO_pct",
+      "importance_pct": 6.433584690093994
     },
     {
       "feature": "SI_pct",
-      "importance_pct": 5.342278480529785
+      "importance_pct": 5.620151042938232
     },
     {
-      "feature": "CH_pct",
-      "importance_pct": 5.081589698791504
+      "feature": "SL_pct",
+      "importance_pct": 5.431983470916748
     },
     {
       "feature": "CU_pct",
-      "importance_pct": 5.005910396575928
+      "importance_pct": 4.843169212341309
+    },
+    {
+      "feature": "handedness_matchup",
+      "importance_pct": 4.786773204803467
     }
   ],
   "baseline_pitch": "FF"
