@@ -1,0 +1,110 @@
+{
+  "model_version": "v1",
+  "phase": 2,
+  "accuracy": {
+    "test_pct": 43.62563457282943,
+    "baseline_pct": 30.127131513862977,
+    "improvement_vs_baseline_pct": 13.49850305896646,
+    "improvement_vs_phase1_pct": 0.0
+  },
+  "pitch_types": [
+    "CH",
+    "CU",
+    "EP",
+    "FC",
+    "FF",
+    "FO",
+    "FS",
+    "KC",
+    "KN",
+    "SI",
+    "SL",
+    "ST"
+  ],
+  "pitch_type_mapping": {
+    "CH": 0,
+    "CU": 1,
+    "EP": 2,
+    "FC": 3,
+    "FF": 4,
+    "FO": 5,
+    "FS": 6,
+    "KC": 7,
+    "KN": 8,
+    "SI": 9,
+    "SL": 10,
+    "ST": 11
+  },
+  "features": [
+    "balls",
+    "strikes",
+    "pitcher_hand",
+    "batter_hand",
+    "handedness_matchup",
+    "outs_when_up",
+    "inning",
+    "workload_bucket_encoded",
+    "batter_k_rate",
+    "runner_on_1b",
+    "runner_on_2b",
+    "runner_on_3b",
+    "bases_loaded",
+    "score_diff",
+    "CH_pct",
+    "CU_pct",
+    "EP_pct",
+    "FC_pct",
+    "FF_pct",
+    "FO_pct",
+    "FS_pct",
+    "KC_pct",
+    "KN_pct",
+    "SI_pct",
+    "SL_pct",
+    "ST_pct"
+  ],
+  "feature_count": 26,
+  "top_10_features": [
+    {
+      "feature": "EP_pct",
+      "importance_pct": 17.859577178955078
+    },
+    {
+      "feature": "KC_pct",
+      "importance_pct": 9.457144737243652
+    },
+    {
+      "feature": "FS_pct",
+      "importance_pct": 9.400004386901855
+    },
+    {
+      "feature": "ST_pct",
+      "importance_pct": 7.761937141418457
+    },
+    {
+      "feature": "FO_pct",
+      "importance_pct": 6.471447467803955
+    },
+    {
+      "feature": "FC_pct",
+      "importance_pct": 6.405262470245361
+    },
+    {
+      "feature": "SL_pct",
+      "importance_pct": 6.11469841003418
+    },
+    {
+      "feature": "SI_pct",
+      "importance_pct": 5.342278480529785
+    },
+    {
+      "feature": "CH_pct",
+      "importance_pct": 5.081589698791504
+    },
+    {
+      "feature": "CU_pct",
+      "importance_pct": 5.005910396575928
+    }
+  ],
+  "baseline_pitch": "FF"
+}
